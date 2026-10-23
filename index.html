@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Juan Carlos Candanedo · Aplicaciones</title>
+  <meta name="description" content="Herramientas y aplicaciones de ingeniería de Juan Carlos Candanedo.">
+  <style>
+    :root { --bg:#f5f6f4; --surface:#fff; --ink:#15191f; --muted:#5d6672; --line:#e1e4e0; --accent:#1c5f9e; --accent-ink:#fff; --soft:#eaf1f8; }
+    @media (prefers-color-scheme: dark) { :root { --bg:#10141a; --surface:#181e27; --ink:#e9edf2; --muted:#9aa5b3; --line:#283140; --accent:#7ab0ea; --accent-ink:#0b1220; --soft:#1d2a3a; } }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+    .wrap { max-width:1040px; margin:0 auto; padding:0 20px; }
+    header { padding:56px 0 28px; }
+    .eyebrow { font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:600; }
+    h1 { font-size:clamp(30px,5vw,46px); line-height:1.1; margin:10px 0 12px; letter-spacing:-.02em; }
+    header p { max-width:560px; color:var(--muted); margin:0; font-size:18px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px; padding:12px 0 56px; }
+    .card { display:flex; flex-direction:column; gap:10px; background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:20px; text-decoration:none; color:inherit; transition:transform .15s, border-color .15s, box-shadow .15s; }
+    a.card:hover, a.card:focus-visible { transform:translateY(-3px); border-color:var(--accent); box-shadow:0 8px 24px rgba(0,0,0,.08); outline:none; }
+    .ico { width:44px; height:44px; border-radius:11px; background:var(--soft); color:var(--accent); display:grid; place-items:center; font-size:22px; }
+    .card h2 { margin:4px 0 0; font-size:18px; }
+    .card p { margin:0; color:var(--muted); font-size:14.5px; flex:1; }
+    .go { font-size:14px; font-weight:600; color:var(--accent); }
+    .soon { opacity:.72; border-style:dashed; }
+    .soon .go { color:var(--muted); font-weight:500; }
+    footer { border-top:1px solid var(--line); padding:22px 0 40px; color:var(--muted); font-size:13px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="eyebrow">Ingeniería HVAC · Panamá</div>
+      <h1>Juan Carlos Candanedo</h1>
+      <p>Mis herramientas y aplicaciones, en un solo lugar.</p>
+    </header>
+    <main><div class="grid" id="apps"></div></main>
+    <footer>© <span id="y"></span> Juan Carlos Candanedo · juancandanedo.org</footer>
+  </div>
+  <script type="module">
+    import apps from './apps.js';
+    const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    document.getElementById('apps').innerHTML = apps.map((a) => {
+      const on = a.estado === 'activa' && a.url;
+      const inner = `<div class="ico" aria-hidden="true">${esc(a.icono || '•')}</div><h2>${esc(a.nombre)}</h2><p>${esc(a.desc)}</p><span class="go">${on ? 'Abrir →' : 'Próximamente'}</span>`;
+      return on ? `<a class="card" href="${esc(a.url)}">${inner}</a>` : `<div class="card soon">${inner}</div>`;
+    }).join('');
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
